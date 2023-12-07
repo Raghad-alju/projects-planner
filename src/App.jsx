@@ -5,7 +5,7 @@ import AddProject from './components/AddProject';
 import SideMenu  from './components/SideMenu';
 import projects from './projects';
 import {useState} from 'react';
-
+// a new change from laptop
 function App() {
    const [visibility,setVisibilty] = useState({showProj:true, addProj:false});
    const [projectList,setProjectList] = useState([...projects]);
