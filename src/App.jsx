@@ -9,9 +9,18 @@ import {useState} from 'react';
 function App() {
    const [visibility,setVisibilty] = useState({showProj:true, addProj:false});
    const [projectList,setProjectList] = useState([...projects]);
-   function saveProject(projObj)
+
+   function saveProject(projObj,opration)
    {
-      setProjectList((prev)=>{return [...prev,projObj]})
+      if(opration==='save'){
+      setProjectList((prev)=>{return [...prev,projObj]})}
+      if(opration==='edit'){
+         var index=projectList.findIndex((p)=>{return(p.id === projObj.id)})
+         setProjectList((prev)=>{
+            var temp= [...prev];
+            temp[index]=projObj;
+            return (temp)})
+      }
    }
 
    function handleVisibility(){
@@ -25,7 +34,7 @@ function App() {
 <SideMenu  handleVisibility={handleVisibility} visibility={visibility}/>
 <AddProject visibility={visibility.addProj} saveProject={saveProject}/>
 
-<Project visibility={visibility.showProj} projectList={projectList}/>
+<Project visibility={visibility.showProj} projectList={projectList} handleVisibility={handleVisibility}/>
 
 </>
   );
