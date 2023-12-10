@@ -22,9 +22,7 @@ export default function Navbar(){
    
     <div className="hidden w-full md:block md:w-auto" id="navbar-default">
       <ul className={ulList}>
-        <li>
-          <a href="#" className={navItem}>Home</a>
-        </li>
+       
         
       </ul>
     </div>
