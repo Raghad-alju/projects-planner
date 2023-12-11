@@ -29,22 +29,17 @@ export default function SideMenu({ handleVisibility, visibility }) {
       //       </ul>
       //    </div>
       // </Sidebar>
-      <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 justify-center">
+      <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200   justify-center">
     <li class="me-2">
-        <button  aria-current="page" class={`inline-block p-4 hover:text-gray-600 hover:bg-gray-100  rounded-t-lg ${!visibility.showProj? 'bg-gray-100':''}`} onClick={handleVisibility} disabled={!visibility.showProj}>Project List</button>
+        <button  aria-current="page" class={`inline-block p-4 hover:text-white hover:bg-orange-400   rounded-t-lg ${!visibility.showProj? 'bg-orange-400 text-white':''}`} onClick={handleVisibility} disabled={!visibility.showProj}>Project List</button>
     </li>
     <li class="me-2">
-    <button  aria-current="page" class={`inline-block p-4 hover:text-gray-600 hover:bg-gray-100  rounded-t-lg ${!visibility.addProj? 'bg-gray-100':''}`} onClick={handleVisibility} disabled={!visibility.addProj}>Add Project</button>
+    <button  aria-current="page" class={`inline-block p-4 hover:text-white hover:bg-orange-400  rounded-t-lg ${!visibility.addProj? 'bg-orange-400 text-white':''}`} onClick={handleVisibility} disabled={!visibility.addProj}>Add Project</button>
     </li>
     <li class="me-2">
         <a href="#" class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Settings</a>
     </li>
-    <li class="me-2">
-        <a href="#" class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Contacts</a>
-    </li>
-    <li>
-        <a class="inline-block p-4 text-gray-400 rounded-t-lg cursor-not-allowed dark:text-gray-500">Disabled</a>
-    </li>
+  
 </ul>
 )
 }

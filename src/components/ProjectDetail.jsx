@@ -4,7 +4,7 @@ import {useRef} from 'react';
 import {forwardRef} from 'react';
 import AddProject from './AddProject';
 
-const ProjectDetail = forwardRef( function ProjectDetail({pId, projectList,updateProjectList},ref){
+const ProjectDetail = forwardRef( function ProjectDetail({pId, projectList,deleteProject},ref){
     
     const currentProject=projectList.find(p => p.id === pId);
 
@@ -44,7 +44,7 @@ const ProjectDetail = forwardRef( function ProjectDetail({pId, projectList,updat
             </div>
            
             <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button class={deleteButtonStyle} onClick={()=>{updateProjectList(pId,projectList)}} >Delete project</button>
+                <button class={deleteButtonStyle} onClick={()=>{deleteProject(pId)}} >Delete project</button>
                 <button class={closeButtonStyle} onClick={()=>{ref.current.close()}} >Close</button>
 
             </div>

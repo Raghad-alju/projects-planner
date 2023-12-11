@@ -11,21 +11,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import { MoonIcon, SunIcon } from "@heroicons/react/24/solid"
 import Datepicker from "tailwind-datepicker-react"
-import { useState, useEffect, useRef } from 'react';
-import { useTheme } from "next-themes"
-import { ThemeProvider } from "next-themes"
-import { Dropdown } from 'flowbite-react';
+import { useState, useRef } from 'react';
 
 export default function AddProject({ saveProject, visibility, opration }) {
     //calander view
-    const [show, setShow] = useState(false)
     const [show2, setShow2] = useState(false)
-    const handleClose = (state) => {
-
-        setShow(state)
-    }
+   
     const handleClose2 = (state) => {
         setShow2(state)
     }
@@ -36,11 +28,11 @@ export default function AddProject({ saveProject, visibility, opration }) {
      border-gray-300 rounded-lg
      focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
      my-4`;
-    const labelStyle = `block mb-2 text-sm font-medium text-gray-900 dark:text-white`;
+    const labelStyle = `block mb-2 text-sm font-medium text-gray-900 `;
     //
     var [project, setProject] = useState({ id: Date.now(), title: '', desc: '', endDue: new Date().toLocaleDateString(), tasks: [] });
 
- 
+
     const titleInput = useRef();
     const descInput = useRef();
     const tasks = useRef();
@@ -60,24 +52,23 @@ export default function AddProject({ saveProject, visibility, opration }) {
     }
 
     return (
-        <ThemeProvider attribute="class" enableColorScheme={false} defaultTheme="light">
             <div hidden={visibility} className="p-4 sm:mx-64">
-                
 
-                <label for="default-input" class={labelStyle}>Project Title</label>
-                <input onMouseLeave={saveInput} ref={titleInput} placeholder="Project Name..." className={inputStyle} type="text" id=""  />
 
-                <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                <label for="default-input" className={labelStyle}>Project Title</label>
+                <input onMouseLeave={saveInput} ref={titleInput} placeholder="Project Name..." className={inputStyle} type="text" id="" />
+
+                <label for="message" className="block mb-2 text-sm font-medium text-gray-900 ">Description</label>
                 <textarea onMouseLeave={saveInput} ref={descInput} id="message" rows="4" className={inputStyle} placeholder="Write your thoughts here..." ></textarea>
 
-                <span class="">Due Date</span>
-                <div class="flex items-center mt-2">
-                   
-                    <div class="relative">
+                <span className="">Due Date</span>
+                <div className="flex items-center mt-2">
+
+                    <div className="relative">
                         <Datepicker onChange={(date) => {
                             const d = new Date(date).toLocaleDateString();
                             setProject((prev) => { return { ...prev, endDue: d } })
-                        }} show={show2} setShow={handleClose2} name="end" type="text" />
+                        }} show={show2} setShow={handleClose2} name="end" type="text" options={options}/>
 
                     </div>
                 </div>
@@ -87,28 +78,28 @@ export default function AddProject({ saveProject, visibility, opration }) {
 
 
 
-                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
+                        <thead className="text-xs text-gray-700 uppercase bg-gray-50  ">
                             <tr>
-                                <th scope="col" class="  w-2 px-8 py-3">
+                                <th scope="col" className="  w-2 px-8 py-3">
                                     #
                                 </th>
-                                <th scope="col" class="px-8 py-3">
+                                <th scope="col" className="px-8 py-3">
                                     Color
                                 </th>
                             </tr>
                         </thead>
                         {project.tasks.map((task, index) => {
                             return (<tbody key={task.id}>
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <th scope="row" class="px-8 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <tr className="bg-white border-b  hover:bg-gray-50 ">
+                                    <th scope="row" className="px-8 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                         {index + 1}
                                     </th>
-                                    <td class="px-8 py-4">
+                                    <td className="px-8 py-4">
                                         {task.task}
                                     </td>
-                                    <td class="px-8 py-4">
+                                    <td className="px-8 py-4">
                                         <button onClick={() => handleClear(task.id)}>clear</button>
                                     </td>
                                 </tr>
@@ -127,7 +118,6 @@ export default function AddProject({ saveProject, visibility, opration }) {
                 <button onClick={() => saveProject(project, opration)}>Save</button>
 
             </div>
-        </ThemeProvider>
 
 
     )
@@ -139,31 +129,7 @@ const options = {
     theme: {
         disabledText: "bg-gray-100 rounded-none",
     },
-    defaultDate: new Date(2020, 10, 12),
-}
-
-export const ThemeSelector = () => {
-    const [mounted, setMounted] = useState(false)
-    const { theme, setTheme } = useTheme()
-
-    useEffect(() => {
-        setMounted(true)
-    }, [])
-    if (!mounted) return null
-    return (
-        <>
-            {theme === "light" || theme === "system" || theme == undefined ? (
-                <button className="p-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-1 focus:ring-blue-300" onClick={() => setTheme("dark")}>
-                    <MoonIcon className="w-6 h-6 text-yellow-500" />
-                </button>
-
-            ) : (
-                <button className="p-2 bg-gray-700 rounded-md hover:bg-gray-800 focus:ring-1 focus:ring-blue-300" onClick={() => setTheme("light")}>
-                    <SunIcon className="w-6 h-6 text-yellow-500" />
-                </button>
-            )}
-        </>
-    )
+    defaultDate: new Date(),
 }
 
 

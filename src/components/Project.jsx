@@ -2,22 +2,19 @@
 import React from 'react';
 import { useState, useRef } from 'react';
 import ProjectDetail from './ProjectDetail';
-import AddProject from './AddProject';
 
 const box = `mr-5 ml-90 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 `
 const title = `mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white`
 
 export default function Project({ visibility, projectList, handleVisibility,updateProjectList,handleProjectList }) {
 
-    const [projectId,setProjectId]=useState(projectList[0].id);
+    const [projectId,setProjectId]=useState(0);
     var today = new Date();
     var Due;
     const dialogRef = useRef();
-    
+    var colorState='';
     //const [leftDays,setLeftDays] =useState()
-    const [vis,setVis]=useState(true);
-    const [tempStore,setTempStore]=useState({});
-    const [opration,setOp]=useState('');
+   
     function handleDate(date) {
        
 
@@ -34,10 +31,15 @@ export default function Project({ visibility, projectList, handleVisibility,upda
         //calculate the left days
   
         if (Due > 0) {
-            if (Due > 7)
+            if (Due > 7){
+               
+               
                 return `${Math.floor(Due / 7)} week`;
-            else
+            }
+            else{
+            
                 return `${Due} days`;
+            }
         } else if (Due < 0) {
             return '-';
         } else
@@ -58,16 +60,19 @@ export default function Project({ visibility, projectList, handleVisibility,upda
         if(loc=='doing'){
         const doingProject =JSON.parse(e.dataTransfer.getData("dragedProject"));
         
+        if(doingProjects.find(p=>p.id === doingProject.id) === undefined)
         setdoingProjects([...doingProjects,doingProject])
 
-        //var newList=projectList.filter(p=>p.id !== doingProject.id)
+      
         updateProjectList(doingProject.id);
         newList=doneProjects.filter(p=>p.id !== doingProject.id)
         setDoneProjects(newList)
     }if(loc=='done'){
         const doneProject =JSON.parse(e.dataTransfer.getData("dragedProject"));
 
+        if(doneProjects.find(p=>p.id === doneProject.id) === undefined)
         setDoneProjects([...doneProjects,doneProject])
+
         var newList=doingProjects.filter(p=>p.id !== doneProject.id)
         setdoingProjects(newList);
         //newList=projectList.filter(p=>p.id !== doneProject.id)
@@ -75,7 +80,8 @@ export default function Project({ visibility, projectList, handleVisibility,upda
 
     }if(loc=='current'){
         const currentProject =JSON.parse(e.dataTransfer.getData("dragedProject"));
-      
+
+        if(projectList.find(p=>p.id === currentProject.id) === undefined)
         handleProjectList(currentProject)
         var newList=doingProjects.filter(p=>p.id !== currentProject.id)
         setdoingProjects(newList);
@@ -86,26 +92,32 @@ export default function Project({ visibility, projectList, handleVisibility,upda
     function handleDragOver(e){
         e.preventDefault();
     }
+    function deleteProject(id){
+        setdoingProjects(doingProjects.filter(p=>p.id !== id))
+        setDoneProjects(doneProjects.filter(p=>p.id !== id))
+        updateProjectList(id)
+    }
     return (
         <>
 
             <div hidden={visibility} className='' >
-                <div className="grid grid-cols-1 md:grid-cols-1 p-4 sm:mx-72 justify-center mt-10 ">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-[60rem] p-4 border rounded-xl border-3 border-gray-700" onDrop={(e)=>handleOnDrop(e,'current')} onDragOver={handleDragOver}>
+                <div className="grid grid-cols-1 md:grid-cols-1 p-6  sm:mx-72 justify-center mt-10  bg-gradient-to-br from-orange-400 to-orange-300 rounded-2xl">
+                <div className='flex text-2xl font-bold pb-6 text-white'>Current Projects</div>
+                    <div className={` grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-white rounded-xl border border-3 border-dashed border-gray-700  w-[60rem] ${projectList.length==0?'h-48':'h-auto'} `} onDrop={(e)=>handleOnDrop(e,'current')} onDragOver={handleDragOver}>
 
-                        {projectList.map((project, index) => {
+                        {projectList.map((project) => {
                             return (
 
 
-                                <div key={project.id} className={box+'hover:cursor-grab'} draggable onDragStart={(e)=>handleOnDrag(e,project)}>
-                                    <ProjectDetail ref={dialogRef} pId={projectId} projectList={projectList} handleVisibility={handleVisibility} updateProjectList={updateProjectList} />
+                                <div key={project.id} className={box+'hover:cursor-grab shadow-red-300 bg-gradient-to-br from-amber-100 to-orange-200 '} draggable onDragStart={(e)=>handleOnDrag(e,project)}>
+                                    <ProjectDetail ref={dialogRef} pId={projectId} projectList={projectList} handleVisibility={handleVisibility}  deleteProject={deleteProject} />
 
-                                    <h5 className={title}>{project.title}</h5>
-                                    <p className="line-clamp-2 font-normal text-gray-700 dark:text-gray-400">{project.desc}</p>
+                                    <h5 className={title+' text-orange-800'}>{project.title}</h5>
+                                    <p className="line-clamp-2 font-normal text-gray-700 ">{project.desc}</p>
 
-                                    <p className="font-normal text-gray-700 dark:text-gray-400" >{handleDate(project.endDue) === '0' ? 'Due today' : `ends in ${handleDate(project.endDue)}`}</p>
-                                    
-                                    <button onClick={() => {if(dialogRef.current!=null)dialogRef.current.showModal(); setProjectId(project.id)}}>view detail</button>
+                                    <p  className={`inline-flex px-1 rounded-md font-normal text-gray-700 bg-${colorState} `} >{handleDate(project.endDue) === '0' ? `Due today` : `Due in ${handleDate(project.endDue)}`}</p>
+                                    <br/>
+                                    <button className='' onClick={() => {if(dialogRef.current!=null)dialogRef.current.showModal(); setProjectId(project.id)}}>view detail</button>
                                 </div>
 
                             )
@@ -113,30 +125,34 @@ export default function Project({ visibility, projectList, handleVisibility,upda
                         )}
                        
                     </div>
-                    <div className={` grid grid-cols-1 md:grid-cols-3 gap-4 p-4 rounded-xl border border-3 border-black w-[60rem] ${doingProjects.length==0?'h-48':'h-auto'} `} onDrop={(e)=>handleOnDrop(e,'doing')} onDragOver={handleDragOver}>
-                        {doingProjects.map((project,index)=>{return(
+                    <div className='flex text-2xl font-bold py-6'>On Progress</div>
+                    <div className={` grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-white rounded-xl border border-3 border-dashed border-gray-700 w-[60rem] ${doingProjects.length==0?'h-48':'h-auto'} `} onDrop={(e)=>handleOnDrop(e,'doing')} onDragOver={handleDragOver}>
+                        {doingProjects.map((project)=>{return(
                             <div key={project.id} className={box+'hover:cursor-grab'} draggable onDragStart={(e)=>handleOnDrag(e,project)}>
-                                    <ProjectDetail ref={dialogRef} pId={projectId} projectList={projectList} handleVisibility={handleVisibility}  updateProjectList={updateProjectList} />
+                                    <ProjectDetail ref={dialogRef} pId={projectId} projectList={doingProjects} handleVisibility={handleVisibility}  deleteProject={deleteProject}/>
 
                                     <h5 className={title}>{project.title}</h5>
                                     <p className="line-clamp-2 font-normal text-gray-700 dark:text-gray-400">{project.desc}</p>
 
-                                    <p className="font-normal text-gray-700 dark:text-gray-400" >{handleDate(project.endDue) === '0' ? 'Due today' : `ends in ${handleDate(project.endDue)}`}</p>
-                                    
+                                    <p className="font-normal text-gray-700 dark:text-gray-400" >{handleDate(project.endDue) === '0' ? 'Due today' : `Due in ${handleDate(project.endDue)}`}</p>
+                                    <button onClick={() => {if(dialogRef.current!=null)dialogRef.current.showModal(); setProjectId(project.id)}}>view detail</button>
+
                                 </div>
                         )})}
 
                         </div>
-                        <div className={` grid grid-cols-1 md:grid-cols-3 gap-4 p-4 rounded-xl border border-3 border-black w-[60rem] ${doneProjects.length==0?'h-48':'h-auto'} `} onDrop={(e)=>handleOnDrop(e,'done')} onDragOver={handleDragOver}>
+                        <div className='flex text-2xl font-bold py-6'>Done</div>
+                        <div className={` grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-white rounded-xl border border-3 border-dashed border-gray-700 w-[60rem] ${doneProjects.length==0?'h-48':'h-auto'} `} onDrop={(e)=>handleOnDrop(e,'done')} onDragOver={handleDragOver}>
                         {doneProjects.map((project,index)=>{return(
                             <div key={project.id} className={box+'hover:cursor-grab'} draggable onDragStart={(e)=>handleOnDrag(e,project)}>
-                                    <ProjectDetail ref={dialogRef} pId={projectId} projectList={projectList} handleVisibility={handleVisibility} updateProjectList={updateProjectList} />
+                                    <ProjectDetail ref={dialogRef} pId={projectId} projectList={doneProjects} handleVisibility={handleVisibility}  deleteProject={deleteProject} />
 
                                     <h5 className={title}>{project.title}</h5>
                                     <p className="line-clamp-2 font-normal text-gray-700 dark:text-gray-400">{project.desc}</p>
 
-                                    <p className="font-normal text-gray-700 dark:text-gray-400" >{handleDate(project.endDue) === '0' ? 'Due today' : `ends in ${handleDate(project.endDue)}`}</p>
-                                    
+                                    <p className="font-normal text-gray-700 dark:text-gray-400" >{handleDate(project.endDue) === '0' ? 'Due today' : `Due in ${handleDate(project.endDue)}`}</p>
+                                    <button onClick={() => {if(dialogRef.current!=null)dialogRef.current.showModal(); setProjectId(project.id)}}>view detail</button>
+
                                 </div>
                         )})}
 
@@ -145,7 +161,6 @@ export default function Project({ visibility, projectList, handleVisibility,upda
                 
 
             </div>
-            <AddProject opration={opration} visibility={vis} editProject={tempStore}/>
         </>
     )
 
