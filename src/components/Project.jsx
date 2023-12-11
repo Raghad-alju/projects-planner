@@ -12,7 +12,7 @@ export default function Project({ visibility, projectList, handleVisibility,upda
     var today = new Date();
     var Due;
     const dialogRef = useRef();
-    var colorState='';
+    var colorState={red:'',yellow:'',green:''};
     //const [leftDays,setLeftDays] =useState()
    
     function handleDate(date) {
