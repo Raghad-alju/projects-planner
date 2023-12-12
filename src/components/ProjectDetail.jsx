@@ -4,10 +4,14 @@ import {useRef} from 'react';
 import {forwardRef} from 'react';
 import AddProject from './AddProject';
 
-const ProjectDetail = forwardRef( function ProjectDetail({pId, projectList,deleteProject},ref){
-    
-    const currentProject=projectList.find(p => p.id === pId);
-
+const ProjectDetail = forwardRef( function ProjectDetail({pId, projectList,deleteProject,forceUpdate},ref){
+    var currentProject=projectList.find(p => p.id === pId);
+    if(currentProject==null){
+        
+        return
+         currentProject={id:'0',title:'0',desc:'ss',tasks:[{id:'s',task:'t'}]}
+         
+     }
     //buttons styles
     const closeButtonStyle=`ms-3 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10`
     const deleteButtonStyle=`text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 `
@@ -15,9 +19,11 @@ const ProjectDetail = forwardRef( function ProjectDetail({pId, projectList,delet
 
   
   
-    if(currentProject!=null){
+    
     return (
-        <dialog  ref={ref} className='overflow-y-auto overflow-x-hidden fixed top-24 right-0 left-0 z-50 justify-center items-center bg-transparent'>
+
+        <dialog  ref={ref} className='overflow-y-auto overflow-x-hidden fixed top-24 right-0 left-0 z-50 justify-center items-center bg-transparent' >
+        
             <div class="relative p-4 w-full max-w-2xl max-h-full">
        
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -44,8 +50,8 @@ const ProjectDetail = forwardRef( function ProjectDetail({pId, projectList,delet
             </div>
            
             <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button class={deleteButtonStyle} onClick={()=>{deleteProject(pId)}} >Delete project</button>
                 <button class={closeButtonStyle} onClick={()=>{ref.current.close()}} >Close</button>
+                <button class={deleteButtonStyle} onClick={()=>{deleteProject(pId)}} >Delete project</button>
 
             </div>
         </div>
@@ -56,6 +62,6 @@ const ProjectDetail = forwardRef( function ProjectDetail({pId, projectList,delet
     )
 }
 
-}
+
 )
 export default ProjectDetail;
