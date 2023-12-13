@@ -101,12 +101,42 @@ export default function Project({ visibility, projectList, handleVisibility,upda
         dialogRef.current.close();
         
     }
+    const projectsStage=[projectList,doingProjects,doneProjects];
+
+
+
+    function Card({project,cardColor}){
+    
+        return(  <div key={project.id} className={box+`hover:cursor-grab shadow-red-300 ${cardColor} `} draggable onDragStart={(e)=>handleOnDrag(e,project)}>
+    
+        <h5 className={title+' text-orange-700'}>{project.title}</h5>
+        <p className="line-clamp-2 md:line-clamp-3 font-normal text-gray-700 ">{project.desc}</p>
+    
+        <p  className={`inline-flex px-1 rounded-md font-normal text-gray-800 ${handleDate(project.endDue) == '0'? 'bg-red-400' : handleDate(project.endDue).substr(-5) === 'weeks'?'bg-green-300':'bg-yellow-300'}`} >{handleDate(project.endDue) === '0' ? `Due today` : `${handleDate(project.endDue)}`}</p>
+        <br/>
+        <button className={` bg-orange-500 py-1 px-2 mx-auto mt-3 text-white rounded-lg hover:bg-orange-600`} onMouseOver={()=>setProjectId(project.id)} onClick={() => {console.log(project.id);if(dialogRef.current!=null)dialogRef.current.showModal();}}>
+            View details</button>
+            
+        <ProjectDetail ref={dialogRef} pId={projectId} projectList={projectList} handleVisibility={handleVisibility}  deleteProject={deleteProject} forceUpdate={forceUpdate}/>
+        
+    
+    </div>
+    )
+    
+    
+    }
+
+
 
     return (
         <>
 
             <div hidden={visibility} className='' >
-                <div className="grid grid-cols-1 md:grid-cols-1 p-6  md:mx-72 justify-center mt-10  bg-gradient-to-br from-orange-400 to-orange-300 rounded-2xl">
+
+
+                <div className="grid grid-cols-1 md:grid-cols-1 p-6  lg:mx-72 mx-10 justify-center mt-10  bg-gradient-to-br from-orange-400 to-orange-300 rounded-2xl">
+
+
                 <div className='  flex text-2xl font-bold pb-6 text-white'>Current Projects</div>
                     <div className={` grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 bg-white rounded-xl border border-3 border-dashed border-gray-700  w-auto ${projectList.length==0?'h-48':'h-auto'} `} onDrop={(e)=>handleOnDrop(e,'current')} onDragOver={handleDragOver}>
 
@@ -114,55 +144,25 @@ export default function Project({ visibility, projectList, handleVisibility,upda
                             
                             return (
                              
-                                <div key={project.id} className={box+'hover:cursor-grab shadow-red-300 bg-gradient-to-br from-amber-100 to-orange-200 '} draggable onDragStart={(e)=>handleOnDrag(e,project)}>
-
-                                    <h5 className={title+' text-orange-700'}>{project.title}</h5>
-                                    <p className="line-clamp-3 font-normal text-gray-700 ">{project.desc}</p>
-
-                                    <p  className={`inline-flex px-1 rounded-md font-normal text-gray-800 ${handleDate(project.endDue) === '0'? 'bg-red-400' : handleDate(project.endDue).substr(-5) === 'weeks'?'bg-green-300':'bg-yellow-300'}`} >{handleDate(project.endDue) === '0' ? `Due today` : `${handleDate(project.endDue)}`}</p>
-                                    <br/>
-                                    <button className=' bg-gradient-to-br from-pink-500 to-orange-500 py-1 px-2 mx-auto mt-3 text-white rounded-lg hover:bg-gradient-to-br hover:from-orange-400 hover:to-pink-400' onMouseOver={()=>setProjectId(project.id)} onClick={() => {console.log(project.id);if(dialogRef.current!=null)dialogRef.current.showModal();}}>
-                                        View details</button>
-                                        
-                                    <ProjectDetail ref={dialogRef} pId={projectId} projectList={projectList} handleVisibility={handleVisibility}  deleteProject={deleteProject} forceUpdate={forceUpdate}/>
-                                    
-
-                                </div>
+                               <Card project={project} cardColor={'bg-gradient-to-br from-amber-100 to-orange-200'}/>
 
                             )
                         }
-                        )}
-                       
+                        )} 
                     </div>
-                    <div className='flex text-2xl font-bold py-6'>On Progress</div>
+
+                    <div className='flex text-2xl font-bold pt-4 pb-6 text-white'>On Progress</div>
                     <div className={` grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-white rounded-xl border border-3 border-dashed border-gray-700 w-auto ${doingProjects.length==0?'h-48':'h-auto'} `} onDrop={(e)=>handleOnDrop(e,'doing')} onDragOver={handleDragOver}>
                         {doingProjects.map((project)=>{return(
-                            <div key={project.id} className={box+'hover:cursor-grab'} draggable onDragStart={(e)=>handleOnDrag(e,project)}>
-                                    <ProjectDetail ref={dialogRef} pId={projectId} projectList={doingProjects} handleVisibility={handleVisibility}  deleteProject={deleteProject}/>
-
-                                    <h5 className={title}>{project.title}</h5>
-                                    <p className="line-clamp-2 font-normal text-gray-700 dark:text-gray-400">{project.desc}</p>
-
-                                    <p className="font-normal text-gray-700 dark:text-gray-400" >{handleDate(project.endDue) === '0' ? 'Due today' : `Due in ${handleDate(project.endDue)}`}</p>
-                                    <button onClick={() => {if(dialogRef.current!=null)dialogRef.current.showModal(); setProjectId(project.id)}}>view detail</button>
-
-                                </div>
+                           <Card project={project} cardColor={'bg-gradient-to-br from-amber-100 to-orange-200'}/>
                         )})}
 
                         </div>
-                        <div className='flex text-2xl font-bold py-6'>Done</div>
+
+                        <div className='flex text-2xl font-bold pb-6 text-white'>Done</div>
                         <div className={` grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-white rounded-xl border border-3 border-dashed border-gray-700 w-auto ${doneProjects.length==0?'h-48':'h-auto'} `} onDrop={(e)=>handleOnDrop(e,'done')} onDragOver={handleDragOver}>
                         {doneProjects.map((project,index)=>{return(
-                            <div key={project.id} className={box+'hover:cursor-grab'} draggable onDragStart={(e)=>handleOnDrag(e,project)}>
-                                    <ProjectDetail ref={dialogRef} pId={projectId} projectList={doneProjects} handleVisibility={handleVisibility}  deleteProject={deleteProject} />
-
-                                    <h5 className={title}>{project.title}</h5>
-                                    <p className="line-clamp-2 font-normal text-gray-700 dark:text-gray-400">{project.desc}</p>
-
-                                    <p className="font-normal text-gray-700 dark:text-gray-400" >{handleDate(project.endDue) === '0' ? 'Due today' : `Due in ${handleDate(project.endDue)}`}</p>
-                                    <button onClick={() => {if(dialogRef.current!=null)dialogRef.current.showModal(); setProjectId(project.id)}}>view detail</button>
-
-                                </div>
+                           <Card project={project} cardColor={' bg-gradient-to-br from-amber-100 to-orange-200'}/>
                         )})}
 
                         </div>
