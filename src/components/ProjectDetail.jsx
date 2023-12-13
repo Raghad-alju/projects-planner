@@ -1,8 +1,6 @@
 
 import React, { useState } from 'react';
-import {useRef} from 'react';
 import {forwardRef} from 'react';
-import AddProject from './AddProject';
 
 const ProjectDetail = forwardRef( function ProjectDetail({pId, projectList,deleteProject,forceUpdate},ref){
     var currentProject=projectList.find(p => p.id === pId);
@@ -42,10 +40,10 @@ const ProjectDetail = forwardRef( function ProjectDetail({pId, projectList,delet
           
             <div class="p-4 md:p-5 space-y-4">
             <h1 className='text-lg font-bold' >Description:</h1>
-            <p className="text-base leading-relaxed text-gray-500 ">{currentProject.desc}</p>
-            <h1 className='text-lg font-bold'>Tasks:</h1>
+            <p className="text-base leading-relaxed text-gray-500 m-4 ">{currentProject.desc}</p>
+            <h1 className='text-lg font-bold' hidden={currentProject.tasks.length===0}>Tasks:</h1>
             <p class="text-base leading-relaxed text-gray-700 ">
-                {<ul className='  bg-orange-300  rounded-md'>
+                {<ul className='  bg-orange-100 w-3/4 m-4  rounded-md'>
 
                 {currentProject.tasks.map((task,index)=>{return (
                 
@@ -58,12 +56,16 @@ const ProjectDetail = forwardRef( function ProjectDetail({pId, projectList,delet
                 </p>
                 
             
-            <p class="text-base leading-relaxed text-gray-500 "> <span className=' font-bold'>ends in:</span> {currentProject.endDue}</p>
+            <p class="text-base leading-relaxed text-gray-600 "> <span className=' font-bold text-gray-800'>ends in:</span> {currentProject.endDue}</p>
             </div>
            
-            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b">
-            <button class={deleteButtonStyle} onClick={()=>{deleteProject(pId)}} >Delete project</button>
-            <button class={closeButtonStyle} onClick={()=>{ref.current.close()}} >Close</button>
+            <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b">
+            <button className={deleteButtonStyle} onClick={()=>{deleteProject(pId)}} >
+            <svg className="float-left w-5 h-5 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
+            <path d="M17 4h-4V2a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v2H1a1 1 0 0 0 0 2h1v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6h1a1 1 0 1 0 0-2ZM7 2h4v2H7V2Zm1 14a1 1 0 1 1-2 0V8a1 1 0 0 1 2 0v8Zm4 0a1 1 0 0 1-2 0V8a1 1 0 0 1 2 0v8Z"/>
+            </svg>
+            Delete project</button>
+            <button className={closeButtonStyle} onClick={()=>{ref.current.close()}} >Close</button>
 
             </div>
         </div>

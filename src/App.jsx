@@ -29,7 +29,7 @@ function App() {
       var storedProj=[projObj,...storedProjects];
  
       localStorage.setItem("projectList",JSON.stringify(storedProj))
-     
+      handleVisibility();
       
    }
 

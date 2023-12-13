@@ -1,8 +1,7 @@
 //this is  a new change
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useState, useRef } from 'react';
 import ProjectDetail from './ProjectDetail';
-
 const box = ` mr-5 ml-90 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 `
 const title = `mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white`
 
@@ -101,18 +100,22 @@ export default function Project({ visibility, projectList, handleVisibility,upda
         dialogRef.current.close();
         
     }
-    const projectsStage=[projectList,doingProjects,doneProjects];
+    
 
 
 
     function Card({project,cardColor}){
     
-        return(  <div key={project.id} className={box+`hover:cursor-grab shadow-red-300 ${cardColor} `} draggable onDragStart={(e)=>handleOnDrag(e,project)}>
+        return(  <div key={project.id} className={box+`hover:cursor-grab shadow-red-300 ${cardColor} font-comicNeue `} draggable onDragStart={(e)=>handleOnDrag(e,project)}>
     
         <h5 className={title+' text-orange-700'}>{project.title}</h5>
-        <p className="line-clamp-2 md:line-clamp-3 font-normal text-gray-700 ">{project.desc}</p>
+        <p className="line-clamp-2 md:line-clamp-3 font-normal text-gray-700 m-3 ">{project.desc}</p>
     
-        <p  className={`inline-flex px-1 rounded-md font-normal text-gray-800 ${handleDate(project.endDue) == '0'? 'bg-red-400' : handleDate(project.endDue).substr(-5) === 'weeks'?'bg-green-300':'bg-yellow-300'}`} >{handleDate(project.endDue) === '0' ? `Due today` : `${handleDate(project.endDue)}`}</p>
+        <p  className={`inline-flex px-1 rounded-md font-normal text-gray-800 ${handleDate(project.endDue) == '0'? 'bg-red-400' : handleDate(project.endDue).substr(-5) === 'weeks'?'bg-green-300':'bg-yellow-300'}`} >
+        <svg className="float-left w-4 h-4 mr-2 my-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z"/>
+        </svg>
+        {handleDate(project.endDue) === '0' ? `Due today` : `${handleDate(project.endDue)}`}</p>
         <br/>
         <button className={` bg-orange-500 py-1 px-2 mx-auto mt-3 text-white rounded-lg hover:bg-orange-600`} onMouseOver={()=>setProjectId(project.id)} onClick={() => {console.log(project.id);if(dialogRef.current!=null)dialogRef.current.showModal();}}>
             View details</button>
@@ -134,11 +137,11 @@ export default function Project({ visibility, projectList, handleVisibility,upda
             <div hidden={visibility} className='' >
 
 
-                <div className="grid grid-cols-1 md:grid-cols-1 p-6  lg:mx-72 mx-10 justify-center mt-10  bg-gradient-to-br from-orange-400 to-orange-300 rounded-2xl">
+                <div className="grid grid-cols-1 md:grid-cols-1 p-6  lg:mx-auto lg:w-[80rem] mx-10 justify-center mt-10  bg-gradient-to-br from-orange-400 to-orange-300 rounded-2xl">
 
 
-                <div className='  flex text-2xl font-bold pb-6 text-white'>Current Projects</div>
-                    <div className={` grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 bg-white rounded-xl border border-3 border-dashed border-gray-700  w-auto ${projectList.length==0?'h-48':'h-auto'} `} onDrop={(e)=>handleOnDrop(e,'current')} onDragOver={handleDragOver}>
+                <div className='  flex text-3xl font-bold pb-6 text-white font-Kalam'>Current Projects</div>
+                    <div className={` grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-4 p-4 bg-white bg-note rounded-xl border border-3 border-dashed border-gray-700  w-auto ${projectList.length==0?'h-48':'h-auto'} `} onDrop={(e)=>handleOnDrop(e,'current')} onDragOver={handleDragOver}>
 
                         {projectList.map((project) => {
                             
@@ -151,16 +154,16 @@ export default function Project({ visibility, projectList, handleVisibility,upda
                         )} 
                     </div>
 
-                    <div className='flex text-2xl font-bold pt-4 pb-6 text-white'>On Progress</div>
-                    <div className={` grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-white rounded-xl border border-3 border-dashed border-gray-700 w-auto ${doingProjects.length==0?'h-48':'h-auto'} `} onDrop={(e)=>handleOnDrop(e,'doing')} onDragOver={handleDragOver}>
+                    <div className='flex text-3xl font-bold py-6 text-white font-Kalam'>On Progress</div>
+                    <div className={` grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-4 p-4 bg-white bg-note rounded-xl border border-3 border-dashed border-gray-700 w-auto ${doingProjects.length==0?'h-48':'h-auto'} `} onDrop={(e)=>handleOnDrop(e,'doing')} onDragOver={handleDragOver}>
                         {doingProjects.map((project)=>{return(
                            <Card project={project} cardColor={'bg-gradient-to-br from-amber-100 to-orange-200'}/>
                         )})}
 
                         </div>
 
-                        <div className='flex text-2xl font-bold pb-6 text-white'>Done</div>
-                        <div className={` grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-white rounded-xl border border-3 border-dashed border-gray-700 w-auto ${doneProjects.length==0?'h-48':'h-auto'} `} onDrop={(e)=>handleOnDrop(e,'done')} onDragOver={handleDragOver}>
+                        <div className='flex text-3xl font-bold py-6 text-white font-Kalam'>Done</div>
+                        <div className={` grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-4 p-4 bg-white bg-note rounded-xl border border-3 border-dashed border-gray-700 w-auto ${doneProjects.length==0?'h-48':'h-auto'} `} onDrop={(e)=>handleOnDrop(e,'done')} onDragOver={handleDragOver}>
                         {doneProjects.map((project,index)=>{return(
                            <Card project={project} cardColor={' bg-gradient-to-br from-amber-100 to-orange-200'}/>
                         )})}

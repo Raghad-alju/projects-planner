@@ -1,43 +1,29 @@
 
 import React from 'react';
 
-import { Sidebar } from 'flowbite-react';
+
 export default function SideMenu({ handleVisibility, visibility }) {
-   const itemStyle = `= w-full text-left flex items-center p-2 text-black-900 rounded-lg hover:text-white dark:hover:bg-gray-700 `
-   const itemIconStyle = `flex-shrink-0 w-5 h-5 text-dark-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" `
+ 
    return (
-      // <Sidebar id="default-sidebar" className="fixed lg:top-0 top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-      //    <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-blue-200">
-
-      //       <ul className="space-y-2 font-medium">
-      //          <li>
-      //             <button onClick={handleVisibility} disabled={!visibility.addProj} className={itemStyle}>
-      //                <img className={itemIconStyle} src="https://www.svgrepo.com/show/532030/circle-heat.svg" />
-      //                <span className="flex-1 ms-3 whitespace-nowrap">Add Project</span>
-      //             </button>
-      //          </li>
-      //          <li>
-      //             <button onClick={handleVisibility} disabled={!visibility.} className={itemStyle}>
-      //                <img className={itemIconStyle} src="https://www.svgrepo.com/show/532030/circle-heat.svg" />
-      //                <span className="flex-1 ms-3 whitespace-nowrap">Project list</span>
-      //             </button>
-      //          </li>
-
-            
-
-
-      //       </ul>
-      //    </div>
-      // </Sidebar>
-      <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200   justify-center">
+   
+      <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 font-comicNeue  justify-center">
     <li class="me-2">
-        <button  aria-current="page" class={`inline-block p-4 hover:text-white hover:bg-orange-400   rounded-t-lg ${!visibility.showProj? 'bg-orange-400 text-white':''}`} onClick={handleVisibility} disabled={!visibility.showProj}>Project List</button>
+        <button  aria-current="page" class={`  inline-block p-4 hover:text-white hover:bg-orange-400   rounded-t-lg ${!visibility.showProj? 'bg-orange-400 text-white':''}`} onClick={handleVisibility} disabled={!visibility.showProj}>
+        <svg className="float-left w-5 h-5 mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 10">
+    <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M6 1h10M6 5h10M6 9h10M1.49 1h.01m-.01 4h.01m-.01 4h.01"/>
+  </svg>
+        Project List</button>
     </li>
     <li class="me-2">
-    <button  aria-current="page" class={`inline-block p-4 hover:text-white hover:bg-orange-400  rounded-t-lg ${!visibility.addProj? 'bg-orange-400 text-white':''}`} onClick={handleVisibility} disabled={!visibility.addProj}>Add Project</button>
+    <button  aria-current="page" class={` inline-block p-4 hover:text-white hover:bg-orange-400  rounded-t-lg ${!visibility.addProj? 'bg-orange-400 text-white':''}`} onClick={handleVisibility} disabled={!visibility.addProj}>
+    <svg className="float-left w-5 h-5 mr-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+    <path d="M.188 5H5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707c-.358.362-.617.81-.753 1.3C.148 5.011.166 5 .188 5ZM14 8a6 6 0 1 0 0 12 6 6 0 0 0 0-12Zm2 7h-1v1a1 1 0 0 1-2 0v-1h-1a1 1 0 0 1 0-2h1v-1a1 1 0 0 1 2 0v1h1a1 1 0 0 1 0 2Z"/>
+    <path d="M6 14a7.969 7.969 0 0 1 10-7.737V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H.188A.909.909 0 0 1 0 6.962V18a1.969 1.969 0 0 0 1.933 2h6.793A7.976 7.976 0 0 1 6 14Z"/>
+  </svg>
+    Add Project</button>
     </li>
     <li class="me-2">
-        <a href="#" class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Settings</a>
+        <a href="#" class="inline-block p-4 rounded-t-lg text-gray-600 bg-gray-100   cursor-not-allowed">Settings</a>
     </li>
   
 </ul>
